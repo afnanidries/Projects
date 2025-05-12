@@ -210,8 +210,10 @@ public class APIUserController extends APIController {
         if ( u == null ) {
             return new ResponseEntity( "User not found", HttpStatus.NOT_FOUND );
         }
-        u.setPassword( user.getPassword() );
-        userService.save( u );
+
+        // ENCODE the password before saving
+        u.setPassword(userService.encodePassword(user.getPassword()));
+        userService.save(u);
         return new ResponseEntity( HttpStatus.OK );
     }
 

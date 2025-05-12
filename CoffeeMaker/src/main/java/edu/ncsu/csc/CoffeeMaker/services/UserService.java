@@ -29,6 +29,11 @@ public class UserService implements UserDetailsService {
         }
         return user;
     }
+    
+    public String encodePassword (final String rawPassword) {
+        final PasswordEncoder p = new BCryptPasswordEncoder();
+        return p.encode(rawPassword);
+    }
 
 
     /**

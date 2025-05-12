@@ -1,147 +1,186 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Coffee Maker - Login</title>
+    <meta charset="UTF-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #FFF5EC, #FFE4CC);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .logo-container {
+            position: relative;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .coffee-cup {
+            font-size: 60px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .steam {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            color: #aaa;
+            animation: rise 2s infinite ease-in-out;
+        }
+
+        @keyframes rise {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #A52A2A;
+            margin-bottom: 25px;
+        }
+
+        .login-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #A52A2A;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #A52A2A;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #8B4513;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .link-container {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .link-container a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .link-container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
     <script>
         angular.module('loginApp', [])
-        .controller('LoginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
-            $scope.user = {username: '', password: ''};
-            $scope.usernameInvalid = false;
-            $scope.usernameError = false;
-            $scope.loginError = $window.location.search.includes('error=true');
-            $scope.logoutMessage = $window.location.search.includes('logout=true');
+            .controller('LoginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+                $scope.user = { username: '', password: '' };
+                $scope.usernameInvalid = false;
+                $scope.usernameError = false;
+                $scope.loginError = $window.location.search.includes('error=true');
+                $scope.logoutMessage = $window.location.search.includes('logout=true');
 
-            $scope.checkUsername = function() {
-                var restricted = /select|update|delete|insert|alter/i;
-                $scope.usernameInvalid = $scope.user.username.includes('*') || restricted.test($scope.user.username);
-                $scope.usernameError = $scope.usernameInvalid;
-                $scope.usernameErrorMessage = $scope.user.username.includes('*') ?
-                    "Username cannot contain the '*' character." :
-                    restricted.test($scope.user.username) ? "Username contains restricted word." : "";
-            };
+                $scope.checkUsername = function () {
+                    const restricted = /select|update|delete|insert|alter/i;
+                    $scope.usernameInvalid = $scope.user.username.includes('*') || restricted.test($scope.user.username);
+                    $scope.usernameError = $scope.usernameInvalid;
+                    $scope.usernameErrorMessage = $scope.user.username.includes('*') ?
+                        "Username cannot contain the '*' character." :
+                        restricted.test($scope.user.username) ? "Username contains restricted word." : "";
+                };
 
-            $scope.submitForm = function() {
-                if (!$scope.usernameInvalid && $scope.loginForm.$valid) {
-                    $http.post('/login', $scope.user).then(function(response) {
-                        // Assume the server redirects on successful login
-                        $window.location.href = response.data.redirectUrl;
-                    }, function(error) {
-                        // Handle error by redirecting to the login page with error parameters
-                        $window.location.href = '/login?error=true';
-                    });
-                } else {
-                    // Prevent submission or show an error
-                    $scope.loginError = true;
-                }
-            };
-        }]);
+                $scope.submitForm = function () {
+                    if (!$scope.usernameInvalid && $scope.loginForm.$valid) {
+                        $http.post('/login', $scope.user).then(function (response) {
+                            $window.location.href = response.data.redirectUrl;
+                        }, function () {
+                            $window.location.href = '/login?error=true';
+                        });
+                    } else {
+                        $scope.loginError = true;
+                    }
+                };
+            }]);
     </script>
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #FFF0E5; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  h1 {
-    color: #A52A2A; 
-    margin-bottom: 20px;
-  }
-
-  form {
-    background-color: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; 
-  }
-
-  input[type="text"],
-  input[type="password"] {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  input[type="submit"] {
-    background-color: #A52A2A; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 95%;
-  }
-
-  input[type="submit"]:hover {
-    background-color: #8B4513; 
-  }
-
-  .register-link p {
-    margin-top: 20px;
-  }
-
-  .register-link a {
-    color: #2196F3; 
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .register-link a:hover {
-    text-decoration: underline;
-  }
-
-  .error {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 20px; 
-  }
-</style>
-
 </head>
 <body ng-app="loginApp" ng-controller="LoginController">
-    <h1>Log In</h1>
-    <div ng-show="loginError" class="error">
-        Invalid username and password.
+    <div class="logo-container">
+        <div class="steam">~</div>
+        <div class="coffee-cup">☕</div>
     </div>
-    <div ng-show="logoutMessage">
-        You have been logged out.
-    </div>
-	<form th:action="@{/login}" method="post">
-        <div>
-            <input type="text" name="username" ng-model="user.username" placeholder="Username" ng-change="checkUsername()" required/>
+    <div class="app-title">Coffee Maker</div>
+
+    <div class="login-container">
+        <h1>Log In</h1>
+
+        <div ng-show="loginError" class="error">Invalid username and password.</div>
+        <div ng-show="logoutMessage">You have been logged out.</div>
+
+        <form name="loginForm" ng-submit="submitForm()">
+            <input type="text" name="username" ng-model="user.username" placeholder="Username" required ng-change="checkUsername()" />
             <span ng-show="usernameError" class="error">{{usernameErrorMessage}}</span>
+
+            <input type="password" name="password" ng-model="user.password" placeholder="Password" required />
+
+            <input type="submit" value="Log in" />
+        </form>
+
+        <div class="link-container">
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+            <p>OR</p>
+            <p><a href="guesthome.html">Continue as Guest</a></p>
         </div>
-        <div>
-                        <input type="password" name="password" placeholder="Password"/>
-        </div>
-                    <input type="submit" value="Log in" />
-    </form>
-
-
-
-    <!-- Direct to create account page or Guest Page -->
-    <div class="register-link">
-        <p>
-            Don't have an account? <br>
-            <a href="register.html">Register</a><br>OR<br>
-            <a href="guesthome.html">Continue as Guest</a>
-        </p>
     </div>
 </body>
 </html>
