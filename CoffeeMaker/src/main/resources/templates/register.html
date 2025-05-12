@@ -3,56 +3,128 @@
 <head>
     <title>Coffee Maker - Create Account</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <style>
+        body {
+            background-color: #fceee3;
+            font-family: Arial, sans-serif;
+            padding-top: 50px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #8b2c2c;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #8b2c2c;
+            font-weight: normal;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #5a2323;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .button-group {
+            margin-top: 20px;
+        }
+
+        input[type="submit"],
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"] {
+            background-color: #8b2c2c;
+            color: white;
+        }
+
+        button {
+            background-color: #f5d5d5;
+            color: #8b2c2c;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+
     <script>
         angular.module('customerApp', [])
             .controller('CustomerController', function($scope, $http) {
-            	$scope.userName = '';
-            	$scope.password = '';
+                $scope.userName = '';
+                $scope.password = '';
 
                 $scope.submitForm = function() {
-                	$scope.user = {
-                			userName: $scope.userName,
-                			password: $scope.password
-                	}
-                	
-                    // Post the data to the endpoint
+                    $scope.user = {
+                        userName: $scope.userName,
+                        password: $scope.password
+                    };
+
                     $http.post('/api/v1/users/customer', $scope.user)
                         .then(function(response) {
-                            // Handle success
                             console.log('Customer created successfully', response);
                             $scope.user = {}; // Reset the form
                             returnHome();
-                            // Optionally show a success message or redirect
                         }, function(error) {
-                            // Handle error
                             console.error('Error creating customer', error);
                         });
                 };
             });
-    </script>
-    <script>
-    function returnHome() {
-       window.location.href = '/login.html';
-    }
+
+        function returnHome() {
+            window.location.href = '/login.html';
+        }
     </script>
 </head>
+
 <body ng-controller="CustomerController">
+    <div class="container">
+        <h1>Coffee Maker</h1>
+        <h2>Create Account</h2>
 
-<div class="container">
-    <h1>Coffee Maker</h1>
-    <h2>Create Account</h2>
+        <form ng-submit="submitForm()">
+            <label for="userName">Username:</label>
+            <input type="text" id="userName" ng-model="userName" placeholder="Enter username" required>
 
-    <form ng-submit="submitForm()">
-        <label for="username">Username:</label>
-        <input type="text" id="userName" ng-model="userName" placeholder="Enter username" required>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" ng-model="password" placeholder="Enter new password" required>
-        
-        <input type="submit" value="Submit">
-    </form>
-    <button type="button" onClick="returnHome()">Return Home</button>
-</div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" ng-model="password" placeholder="Enter password" required>
 
+            <div class="button-group">
+                <input type="submit" value="Submit">
+                <button type="button" onClick="returnHome()">Return Home</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

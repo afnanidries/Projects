@@ -22,11 +22,14 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    public User loadUserByUsername ( final String username ) throws UsernameNotFoundException {
-        final User user = userRepository.findByUserName( username );
-        // TODO sanity checks
+    public User loadUserByUsername (final String username) throws UsernameNotFoundException {
+        final User user = userRepository.findByUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
         return user;
     }
+
 
     /**
      * returns a list of all users
