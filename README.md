@@ -1,6 +1,6 @@
 # ☕ CoffeeMaker
 
-A Spring Boot application for managing coffee recipes, inventory, and customer orders — developed as part of the CSC326 course at NC State University.
+A Spring Boot application for managing coffee recipes, inventory, and customer orders
 
 ## 🚀 Features
 
