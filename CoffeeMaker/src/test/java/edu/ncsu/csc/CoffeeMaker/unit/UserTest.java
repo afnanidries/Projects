@@ -49,7 +49,7 @@ class UserTest {
         Assertions.assertTrue( u2.getAuthorities().get( 0 ).getAuthority().equals( "STAFF" ) );
         Assertions.assertTrue( u3.getAuthorities().get( 0 ).getAuthority().equals( "CUSTOMER" ) );
 
-        u1.setUserName( "Arsalaan" );
+        u1.setUsername( "Arsalaan" );
         u1.setActive( false );
         Assertions.assertFalse( u1.isActive() ); // making sure it NOT active
         u2.setPassword( "securePassword" );
@@ -121,7 +121,7 @@ class UserTest {
     @Test
     void testGetUsername () {
         final User user = new User();
-        user.setUserName( "testUser" );
+        user.setUsername( "testUser" );
         assertEquals( "testUser", user.getUsername() );
     }
 
@@ -236,14 +236,14 @@ class UserTest {
     @Test
     void testGetUserName () {
         final User user = new User();
-        user.setUserName( "testUser" );
+        user.setUsername( "testUser" );
         Assertions.assertEquals( "testUser", user.getUsername() );
     }
 
     @Test
     void testSetUserName () {
         final User user = new User();
-        user.setUserName( "testUser" );
+        user.setUsername( "testUser" );
         Assertions.assertEquals( "testUser", user.getUsername() );
     }
 

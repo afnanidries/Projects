@@ -47,7 +47,7 @@ public class APIInventoryController extends APIController {
     @GetMapping ( BASE_PATH + "/inventory" )
     public ResponseEntity getInventory () {
         final Inventory inventory = service.getInventory();
-        System.out.println("📦 Inventory has " + inventory.getIngredientList().size() + " ingredients.");
+//        System.out.println("📦 Inventory has " + inventory.getIngredientList().size() + " ingredients.");
         return new ResponseEntity( inventory, HttpStatus.OK );
     }
     

@@ -50,7 +50,7 @@ class APIUserTest {
 
     private User makeUser ( final String name, final String password ) {
         final User u = new User();
-        u.setUserName( name );
+        u.setUsername( name );
         u.setPassword( password );
         u.setActive( true );
         return u;
@@ -139,7 +139,7 @@ class APIUserTest {
     @Transactional
     void testSignupValid () throws Exception {
         final User peyton = new User();
-        peyton.setUserName( "peyton" );
+        peyton.setUsername( "peyton" );
         peyton.setPassword( "applejuice" );
 
         mvc.perform( post( "/api/v1/users/customer" ).contentType( MediaType.APPLICATION_JSON )
@@ -157,7 +157,7 @@ class APIUserTest {
     @Transactional
     void testSignupInvalid () throws Exception {
         final User j = new User();
-        j.setUserName( "james" );
+        j.setUsername( "james" );
         j.setPassword( "applejuice" );
 
         mvc.perform( post( "/api/v1/users/customer" ).contentType( MediaType.APPLICATION_JSON )
@@ -176,7 +176,7 @@ class APIUserTest {
     @WithMockUser ( username = "justin", password = "brownie", authorities = { User.CUSTOMER } )
     void testChangePassword () throws Exception {
         final User newJustin = new User();
-        newJustin.setUserName( "justin" );
+        newJustin.setUsername( "justin" );
         newJustin.setPassword( "carrots" );
         final String oldPassword = userService.loadUserByUsername( "justin" ).getPassword();
 
@@ -197,7 +197,7 @@ class APIUserTest {
     @WithMockUser ( username = "james", password = "milkshake", authorities = { User.CUSTOMER } )
     void testChangePasswordIllegal () throws Exception {
         final User newJustin = new User();
-        newJustin.setUserName( "justin" );
+        newJustin.setUsername( "justin" );
         newJustin.setPassword( "carrots" );
         final String oldPassword = userService.loadUserByUsername( "justin" ).getPassword();
 
@@ -215,7 +215,7 @@ class APIUserTest {
     @WithMockUser ( authorities = { User.MANAGER } )
     void testAddStaff () throws Exception {
         final User newJustin = new User();
-        newJustin.setUserName( "wow" );
+        newJustin.setUsername( "wow" );
         newJustin.setPassword( "carrots" );
 
         mvc.perform( post( "/api/v1/users/staff" ).contentType( MediaType.APPLICATION_JSON )
@@ -229,7 +229,7 @@ class APIUserTest {
     @Transactional
     void testChangePasswordAnonymous () throws Exception {
         final User newJustin = new User();
-        newJustin.setUserName( "justin" );
+        newJustin.setUsername( "justin" );
         newJustin.setPassword( "carrots" );
         final String oldPassword = userService.loadUserByUsername( "justin" ).getPassword();
 
@@ -250,7 +250,7 @@ class APIUserTest {
     @WithMockUser ( authorities = { User.MANAGER } )
     void testPostManager () throws Exception {
         final User u = new User();
-        u.setUserName( "silly" );
+        u.setUsername( "silly" );
         u.setPassword( "b" );
 
         mvc.perform( post( "/api/v1/users/manager" ).contentType( MediaType.APPLICATION_JSON )
@@ -268,7 +268,7 @@ class APIUserTest {
     @WithMockUser ( authorities = { User.STAFF } )
     void testPostManagerInvalid () throws Exception {
         final User u = new User();
-        u.setUserName( "silly" );
+        u.setUsername( "silly" );
         u.setPassword( "b" );
 
         mvc.perform( post( "/api/v1/users/manager" ).contentType( MediaType.APPLICATION_JSON )
@@ -284,9 +284,11 @@ class APIUserTest {
     @WithMockUser ( authorities = { User.MANAGER } )
     void testPutStaff () throws Exception {
         final User u = new User();
-        u.setUserName( "mukul" );
+        u.setUsername( "mukul" );
         u.setPassword( "asdf" );
-        final String oldPass = userService.loadUserByUsername( "mukul" ).getPassword();
+        User createdUser = userService.loadUserByUsername("mukul");
+        
+        final String oldPass = createdUser.getPassword();
 
         mvc.perform( put( "/api/v1/users/staff" ).contentType( MediaType.APPLICATION_JSON )
                 .content( TestUtils.asJsonString( u ) ) ).andExpect( status().isOk() );
@@ -307,7 +309,7 @@ class APIUserTest {
     void testDeleteStaff () throws Exception {
         // Make user
         final User u = new User();
-        u.setUserName( "mukul" );
+        u.setUsername( "mukul" );
         u.setPassword( "asdf" );
         userService.save( u );
 

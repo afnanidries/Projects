@@ -1,5 +1,6 @@
 package edu.ncsu.csc.CoffeeMaker.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,79 +18,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.ncsu.csc.CoffeeMaker.models.Recipe;
 import edu.ncsu.csc.CoffeeMaker.models.User;
-import edu.ncsu.csc.CoffeeMaker.services.RecipeService;
 import edu.ncsu.csc.CoffeeMaker.models.Ingredient;
+import edu.ncsu.csc.CoffeeMaker.services.IngredientService;
+import edu.ncsu.csc.CoffeeMaker.services.RecipeService;
 
-
-/**
- * final User newJustin = new User(); newJustin.setUserName( "justin" );
- * newJustin.setPassword( "carrots" ); newJustin.grantManager(); // should not
- * be allowed by backend
- *
- * mvc.perform( put( "/api/v1/users/customer" ).contentType(
- * MediaType.APPLICATION_JSON ) .content( TestUtils.asJsonString( newJustin ) )
- * ).andExpect( status().isOk() );
- *
- * This is the controller that holds the REST endpoints that handle CRUD
- * operations for Recipes.
- *
- * Spring will automatically convert all of the ResponseEntity and List results
- * to JSON
- *
- * @author Kai Presler-Marshall
- * @author Michelle Lemons
- *
- */
 @SuppressWarnings ( { "unchecked", "rawtypes" } )
 @RestController
 public class APIRecipeController extends APIController {
 
-    /**
-     * RecipeService object, to be autowired in by Spring to allow for
-     * manipulating the Recipe model
-     */
     @Autowired
     private RecipeService service;
 
-    /**
-     * REST API method to provide GET access to all recipes in the system
-     *
-     * @return JSON representation of all recipies
-     */
+    @Autowired
+    private IngredientService ingredientService;
+
     @GetMapping ( BASE_PATH + "/recipes" )
     public List<Recipe> getRecipes () {
+    	System.out.println("test hit get recipes list");
         return service.findAll();
     }
 
-    /**
-     * REST API method to provide GET access to a specific recipe, as indicated
-     * by the path variable provided (the name of the recipe desired)
-     *
-     * @param name
-     *            recipe name
-     * @return response to the request
-     */
     @GetMapping ( BASE_PATH + "/recipes/{name}" )
     public ResponseEntity getRecipe ( @PathVariable ( "name" ) final String name ) {
+    	System.out.println("test hit get recipes response");
         final Recipe recipe = service.findByName( name );
         return null == recipe
                 ? new ResponseEntity( errorResponse( "No recipe found with name " + name ), HttpStatus.NOT_FOUND )
                 : new ResponseEntity( recipe, HttpStatus.OK );
     }
 
-    /**
-     * REST API method to provide POST access to the Recipe model. This is used
-     * to create a new Recipe by automatically converting the JSON RequestBody
-     * provided to a Recipe object. Invalid JSON will fail.
-     *
-     * @param recipe
-     *            The valid Recipe to be saved.
-     * @return ResponseEntity indicating success if the Recipe could be saved to
-     *         the inventory, or an error if it could not be
-     */
     @PostMapping ( BASE_PATH + "/recipes" )
     public ResponseEntity createRecipe ( @RequestBody final Recipe recipe ) {
-    	System.out.println("📥 Controller hit with recipe: " + recipe);
+        System.out.println("📥 Controller hit with recipe: " + recipe);
         final Authentication a = SecurityContextHolder.getContext().getAuthentication();
         if ( !isAuthorized( a, User.STAFF ) ) {
             return new ResponseEntity( HttpStatus.FORBIDDEN );
@@ -103,44 +63,71 @@ public class APIRecipeController extends APIController {
         if ( recipe.getPrice() < 0 ) {
             return new ResponseEntity( errorResponse( "Price must be greater than zero." ), HttpStatus.BAD_REQUEST );
         }
+
         if ( recipe.getIngredients().stream().anyMatch( ( i ) -> i.getUnits() <= 0 ) ) {
             return new ResponseEntity( errorResponse( "Ingredient Amounts must be greater than zero." ),
                     HttpStatus.BAD_REQUEST );
         }
+
         if ( recipe.getIngredients().stream().anyMatch( ( i ) -> i.getName() == null || i.getName().length() == 0 ) ) {
             return new ResponseEntity( errorResponse( "Ingredients must all have names" ), HttpStatus.BAD_REQUEST );
         }
+
         if ( null != service.findByName( recipe.getName() ) ) {
             return new ResponseEntity( errorResponse( "Recipe with the name " + recipe.getName() + " already exists" ),
                     HttpStatus.BAD_REQUEST );
         }
-        if ( service.findAll().size() < 3 ) {
-        	for (Ingredient ingredient : recipe.getIngredients()) {
-        	    ingredient.setRecipe(recipe);
-        	}
 
+        if ( service.findAll().size() < 3 ) {
+            List<Ingredient> ingredientsToSave = new ArrayList<>();
+
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                System.out.println("🧾 Incoming: " + ingredient.getName() + " | units: " + ingredient.getUnits());
+
+                final Ingredient existing = ingredientService.findInventoryIngredientByName(ingredient.getName());
+
+                if (existing != null && existing.getInventory() != null) {
+                    System.out.println("🔁 Reusing inventory ingredient: " + existing.getName());
+
+                    // Create a new Ingredient that copies the name, but not the inventory
+                    Ingredient detached = new Ingredient();
+                    detached.setName(existing.getName());
+                    detached.setUnits(ingredient.getUnits()); // amount for the recipe
+                    detached.setRecipe(recipe);
+                    detached.setInventory(null); // avoid linking back to inventory
+
+                    ingredientsToSave.add(detached);
+                } else {
+                    System.out.println("🆕 Using new ingredient: " + ingredient.getName());
+
+                    ingredient.setRecipe(recipe);
+                    ingredient.setInventory(null);
+                    ingredientsToSave.add(ingredient);
+                }
+            }
+            System.out.println("📦 Ingredients to save:");
+            for (Ingredient i : ingredientsToSave) {
+                System.out.println("- " + i.getName() + " | units: " + i.getUnits());
+            }
+
+            recipe.getIngredients().clear(); 
+            for (Ingredient i : ingredientsToSave) {
+                recipe.addIngredient(i);
+            }
+            System.out.println("🔍 Final ingredients in recipe before save:");
+            for (Ingredient i : recipe.getIngredients()) {
+                System.out.println("- " + i.getName() + " | units: " + i.getUnits() + " | recipe_id: " + i.getRecipe().getId());
+            }
             service.save( recipe );
             return new ResponseEntity( successResponse( recipe.getName() + " successfully created" ), HttpStatus.OK );
         }
-
         else {
             return new ResponseEntity(
                     errorResponse( "Insufficient space in recipe book for recipe " + recipe.getName() ),
                     HttpStatus.INSUFFICIENT_STORAGE );
         }
-
     }
 
-    /**
-     * REST API method to provide PUT modifications to the Recipe Model. By
-     * making a put request to this API endpoint, we indicate that we would like
-     * to update the recipe with the new values in the JSON.
-     *
-     * @param recipe
-     *            The VALID modifications to the recipe.
-     * @return ResponseEntity indicating success if the Recipe could be saved to
-     *         the inventory, or an error if it could not be
-     */
     @PutMapping ( BASE_PATH + "/recipes" )
     public ResponseEntity editRecipe ( @RequestBody final Recipe recipe ) {
         final Authentication a = SecurityContextHolder.getContext().getAuthentication();
@@ -170,18 +157,6 @@ public class APIRecipeController extends APIController {
         return new ResponseEntity( successResponse( name + " successfully updated" ), HttpStatus.OK );
     }
 
-
-    /**
-     *
-     * REST API method to allow deleting a Recipe from the CoffeeMaker's
-     * Inventory, by making a DELETE request to the API end-point and indicating
-     * the recipe to delete (as a path variable)
-     *
-     * @param name
-     *            The name of the Recipe to delete
-     * @return Success if the recipe could be deleted; an error if the recipe
-     *         does not exist
-     */
     @DeleteMapping ( BASE_PATH + "/recipes/{name}" )
     public ResponseEntity deleteRecipe ( @PathVariable final String name ) {
         final Authentication a = SecurityContextHolder.getContext().getAuthentication();

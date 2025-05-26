@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure ( final AuthenticationManagerBuilder auth ) throws Exception {
         final User admin = new User();
-        admin.setUserName( "admin" );
+        admin.setUsername( "admin" );
         admin.setPassword( passwordEncoder().encode( "password" ) );
         admin.grantManager();
         admin.grantStaff();

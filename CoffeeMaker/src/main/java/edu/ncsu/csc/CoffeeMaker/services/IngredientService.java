@@ -34,6 +34,11 @@ public class IngredientService extends Service<Ingredient, Long> {
         return ingredientRepository.findByName( name );
     }
     
+    public Ingredient findInventoryIngredientByName(final String name) {
+        return ingredientRepository.findInventoryIngredientByName(name);
+    }
+
+    
     /**
      * Method to fetch all ingredients
      */

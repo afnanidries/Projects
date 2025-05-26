@@ -102,7 +102,7 @@ public class User implements UserDetails {
     public User ( final String userName, final String password, final String role ) {
         setAuthorities( authorities ); // instantiates the authorites list, is
                                        // initially empty
-        setUserName( userName ); // sets username field
+        setUsername( userName ); // sets username field
         setPassword( password ); // sets password field
 
         // sets authority based on what is given as the users role, eg. staff
@@ -310,7 +310,7 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUserName ( final String userName ) {
+    public void setUsername ( final String userName ) {
         this.userName = userName;
     }
 

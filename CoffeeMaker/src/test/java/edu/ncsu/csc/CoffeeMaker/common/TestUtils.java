@@ -10,7 +10,7 @@ import com.google.gson.Gson;
  */
 public class TestUtils {
 
-    private static Gson gson = new Gson();
+//    private static Gson gson = new Gson();
 
     /**
      * Uses Google's GSON parser to serialize a Java object to JSON. Useful for
@@ -20,8 +20,13 @@ public class TestUtils {
      *            to serialize to JSON
      * @return JSON string associated with object
      */
-    public static String asJsonString ( final Object obj ) {
-        return gson.toJson( obj );
+    public static String asJsonString(final Object obj) {
+        try {
+            return new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
+
 
 }

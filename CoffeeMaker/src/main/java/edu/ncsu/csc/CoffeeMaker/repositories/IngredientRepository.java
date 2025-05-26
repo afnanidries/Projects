@@ -1,6 +1,8 @@
 package edu.ncsu.csc.CoffeeMaker.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import edu.ncsu.csc.CoffeeMaker.models.Ingredient;
 
@@ -16,4 +18,9 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
      * @return Found recipe, null if none.
      */
     Ingredient findByName ( String name );
+    
+    @Query("SELECT i FROM Ingredient i WHERE i.name = :name AND i.inventory IS NOT NULL")
+    Ingredient findInventoryIngredientByName(@Param("name") String name);
+
 }
+
