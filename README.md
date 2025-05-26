@@ -105,7 +105,7 @@ CoffeeMaker/
 
 | Login | Inventory | Make Coffee |
 |-------|-----------|-------------|
-| ![](images/loginPageCoffeeMaker.png) | ![](images/inventory.png) | ![](images/make-coffee.png) |
+| ![](images/loginPageCoffeeMaker.png) | ![](images/InventoryForWhippedCoffee.png) | ![](images/make-coffee.png) |
 
 ---
 
