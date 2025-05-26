@@ -2,9 +2,9 @@
 <html>
 <head>
     <title>Login Page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    
+
     <script>
         angular.module('loginApp', [])
         .controller('LoginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
@@ -15,7 +15,7 @@
             $scope.logoutMessage = $window.location.search.includes('logout=true');
 
             $scope.checkUsername = function() {
-                var restricted = /select|update|delete|insert|alter/i;
+                const restricted = /select|update|delete|insert|alter/i;
                 $scope.usernameInvalid = $scope.user.username.includes('*') || restricted.test($scope.user.username);
                 $scope.usernameError = $scope.usernameInvalid;
                 $scope.usernameErrorMessage = $scope.user.username.includes('*') ?
@@ -26,122 +26,140 @@
             $scope.submitForm = function() {
                 if (!$scope.usernameInvalid && $scope.loginForm.$valid) {
                     $http.post('/login', $scope.user).then(function(response) {
-                        // Assume the server redirects on successful login
                         $window.location.href = response.data.redirectUrl;
                     }, function(error) {
-                        // Handle error by redirecting to the login page with error parameters
                         $window.location.href = '/login?error=true';
                     });
                 } else {
-                    // Prevent submission or show an error
                     $scope.loginError = true;
                 }
             };
         }]);
     </script>
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #FFF0E5; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: center;
-  }
 
-  h1 {
-    color: #A52A2A; 
-    margin-bottom: 20px;
-  }
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #FFF0E5;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-  form {
-    background-color: white;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; 
-  }
+        h1 {
+            color: #A52A2A;
+            margin-bottom: 10px;
+        }
 
-  input[type="text"],
-  input[type="password"] {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: url('https://banner2.cleanpng.com/20240310/rsu/transparent-coffee-logo-simple-coffee-cup-logo-with-1710844810291.webp') no-repeat center center / contain;
+            animation: float 3s ease-in-out infinite;
+            margin-bottom: 10px;
+            background-color: #FFF0E5;
+            border-radius: 50%; 
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.1); 
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
 
-  input[type="submit"] {
-    background-color: #A52A2A; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-top: 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 95%;
-  }
+        form {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 280px;
+        }
 
-  input[type="submit"]:hover {
-    background-color: #8B4513; 
-  }
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-  .register-link p {
-    margin-top: 20px;
-  }
+        input[type="submit"] {
+            background-color: #A52A2A;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            width: 95%;
+        }
 
-  .register-link a {
-    color: #2196F3; 
-    text-decoration: none;
-    font-weight: bold;
-  }
+        input[type="submit"]:hover {
+            background-color: #8B4513;
+        }
 
-  .register-link a:hover {
-    text-decoration: underline;
-  }
+        .register-link {
+            text-align: center;
+            margin-top: 10px;
+        }
 
-  .error {
-    color: red;
-    font-size: 0.9em;
-    margin-top: 20px; 
-  }
-</style>
+        .register-link p {
+            margin: 15px 0 5px;
+        }
 
+        .register-link a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: bold;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
+
 <body ng-app="loginApp" ng-controller="LoginController">
+    <div class="logo"></div>
     <h1>Log In</h1>
+
     <div ng-show="loginError" class="error">
         Invalid username and password.
     </div>
     <div ng-show="logoutMessage">
         You have been logged out.
     </div>
-	<form th:action="@{/login}" method="post">
+
+    <form th:action="@{/login}" method="post" name="loginForm" ng-submit="submitForm()">
         <div>
-            <input type="text" name="username" ng-model="user.username" placeholder="Username" ng-change="checkUsername()" required/>
+            <input type="text" name="username" ng-model="user.username" placeholder="Username" ng-change="checkUsername()" required />
             <span ng-show="usernameError" class="error">{{usernameErrorMessage}}</span>
         </div>
         <div>
-                        <input type="password" name="password" placeholder="Password"/>
+            <input type="password" name="password" placeholder="Password" required />
         </div>
-                    <input type="submit" value="Log in" />
+        <input type="submit" value="Log in" />
     </form>
 
-
-
-    <!-- Direct to create account page or Guest Page -->
     <div class="register-link">
-        <p>
-            Don't have an account? <br>
-            <a href="register.html">Register</a><br>OR<br>
-            <a href="guesthome.html">Continue as Guest</a>
-        </p>
+        <p>Don't have an account?</p>
+        <a href="register.html">Register</a>
+        <span>OR</span>
+        <a href="guesthome.html">Continue as Guest</a>
     </div>
 </body>
 </html>
