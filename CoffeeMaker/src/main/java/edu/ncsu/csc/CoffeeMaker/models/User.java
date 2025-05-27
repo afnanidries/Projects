@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,8 @@ public class User implements UserDetails {
     /**
      * A users user name
      */
-    private String                       userName;
+    @Column(name = "username", unique = true, nullable = false)
+    private String username;
 
     /**
      * A users password (needs to be hashed I think for security)
@@ -154,7 +156,7 @@ public class User implements UserDetails {
      */
     @Override
     public String getUsername () {
-        return userName;
+        return username;
     }
 
     /**
@@ -310,8 +312,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername ( final String userName ) {
-        this.userName = userName;
+    public void setUsername ( final String username ) {
+        this.username = username;
     }
 
     public boolean isActive () {

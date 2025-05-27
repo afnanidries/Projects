@@ -13,58 +13,64 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import edu.ncsu.csc.CoffeeMaker.controllers.CustomAuthenticationSuccessHandler;
-import edu.ncsu.csc.CoffeeMaker.models.User;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity ( securedEnabled = true )
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
+    /**
+     * Configure authentication by adding in-memory admin and linking DB users
+     */
     @Override
-    protected void configure ( final AuthenticationManagerBuilder auth ) throws Exception {
-        final User admin = new User();
-        admin.setUsername( "admin" );
-        admin.setPassword( passwordEncoder().encode( "password" ) );
-        admin.grantManager();
-        admin.grantStaff();
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+        // In-memory admin account
+        auth.inMemoryAuthentication()
+            .withUser("admin")
+            .password(passwordEncoder().encode("password"))
+            .authorities("MANAGER", "STAFF");
 
-        auth.inMemoryAuthentication().withUser( admin );
-        auth.userDetailsService( userDetailsService );
+        // Database-backed users
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Password encoder bean using BCrypt
+     */
     @Bean
-    public PasswordEncoder passwordEncoder () {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configure security rules and login/logout behavior
+     */
     @Override
-    protected void configure ( final HttpSecurity http ) throws Exception {
-
-        http.authorizeRequests()
-                .antMatchers( "/login", "/guesthome.html", "/register.html", "/order.html", "/orders/*", "/orders/",
-                        "/api/v1/users/customer", "/menu.html", "/api/v1/recipes", "/api/v1/orders", "/orderstatus*",
-                        "/api/v1/orders/*" )
-                .permitAll() // Allow
-                // access
-                // to the
-                // login
-                // page
-                .anyRequest().authenticated() // Require authentication for all
-                                              // other requests
-                .and().formLogin().loginPage( "/login" ).permitAll()
-                .successHandler( new CustomAuthenticationSuccessHandler() ).and().logout().logoutUrl( "/logout" ) // Specify
-                // the
-                // URL
-                // for
-                // logout
-                .logoutSuccessUrl( "/login" ) // Redirect to login page after
-                                              // logout
-                .invalidateHttpSession( true ) // Invalidate HTTP session
-                .deleteCookies( "JSESSIONID" ) // Delete cookies
-                .and().csrf().disable();
-
+    protected void configure(final HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers(
+                    "/login", "/guesthome.html", "/register.html", "/order.html",
+                    "/orders/*", "/orders/", "/api/v1/users/customer",
+                    "/menu.html", "/api/v1/recipes", "/api/v1/orders",
+                    "/orderstatus*", "/api/v1/orders/*", "/css/**", "/js/**", "/images/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .successHandler(new CustomAuthenticationSuccessHandler())
+                .permitAll()
+                .and()
+            .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout=true")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .and()
+            .csrf().disable();
     }
-
 }

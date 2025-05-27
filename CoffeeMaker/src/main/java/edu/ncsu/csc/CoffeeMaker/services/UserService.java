@@ -23,7 +23,7 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername ( final String username ) throws UsernameNotFoundException {
-        final User user = userRepository.findByUserName( username );
+        final User user = userRepository.findByUsername( username );
         // TODO sanity checks
         return user;
     }
@@ -85,7 +85,7 @@ public class UserService implements UserDetailsService {
      *         otherwise
      */
     private boolean register ( final User user ) {
-        final User check = userRepository.findByUserName( user.getUsername() );
+        final User check = userRepository.findByUsername( user.getUsername() );
         if ( null != check ) {
             return false;
         }
