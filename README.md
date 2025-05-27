@@ -43,7 +43,7 @@ Built cloud-native ETL workflows replacing legacy pipelines.
 
 - **Afnan Idries**
 - 📍 Durham, NC
-- 📧 ahidries@ncsu.edu  
+- 📧 afnanidries@gmail.com 
 - 🔗 [LinkedIn](https://linkedin.com/in/afnanidries)  
 - 🔗 [GitHub](https://github.com/afnanidries)
 
