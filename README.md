@@ -119,7 +119,6 @@ CoffeeMaker/
 
 ## 📌 Notes
 
-- Developed as part of a course project at NC State.
 - Built with test-driven development and security best practices in mind.
 
 ---
