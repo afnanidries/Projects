@@ -1,4 +1,4 @@
-# Afnan Idries – Software Engineering Projects
+# Afnan Idries – Technical Projects Portfolio
 
 Welcome to my portfolio! This repository highlights selected personal and academic projects across full-stack development, data processing, and AI, using Java, Python, Spring Boot, MySQL, and AWS.
 
