@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Afnan’s Foundation Matcher</title>
+    <title>Foundation Matcher</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -18,20 +18,47 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .brand-tweet {
+            font-size: 1rem;
+            color: #5c4033;
+            min-height: 2em;
+        }
     </style>
 </head>
 <body>
     <div class="container py-5 fade-in">
-        <h1 class="text-center mb-4" style="font-weight: bold; color: #5c4033;">Afnan’s Foundation Matcher</h1>
-
-        <p class="text-center mb-4">Upload a selfie and get instant shade matches + live brand updates 🎯</p>
+        <h2 class="mb-4 text-center" style="font-weight: bold; color: #5c4033;">Find Your Perfect Foundation Match 💄</h2>
 
         <form action="/upload" method="POST" enctype="multipart/form-data" class="text-center">
             <div class="mb-3 col-md-6 mx-auto">
                 <input type="file" name="image" class="form-control form-control-lg" required>
             </div>
-            <button type="submit" class="btn btn-dark btn-lg">Match My Shade</button>
+            <button type="submit" class="btn btn-dark btn-lg">Upload & Match</button>
         </form>
+
+        <h4 class="mt-5 mb-3 text-center">📰 Trending Beauty Brand Updates</h4>
+        <div id="brand-feed" class="text-center">
+            {% for tweet in twitter %}
+                <div class="brand-tweet mb-3" style="opacity: 0; transition: opacity 1s;">
+                    <strong>{{ tweet.brand }}</strong>: {{ tweet.tweet }}
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    <script>
+        const tweets = document.querySelectorAll('.brand-tweet');
+        let index = 0;
+
+        function cycleTweets() {
+            tweets.forEach(t => t.style.opacity = 0); // Hide all
+            tweets[index].style.opacity = 1; // Show one
+            index = (index + 1) % tweets.length;
+        }
+
+        setInterval(cycleTweets, 3000); // Change every 3 seconds
+        cycleTweets(); // Initial run
+    </script>
 </body>
 </html>
