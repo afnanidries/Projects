@@ -11,9 +11,19 @@ Each subproject includes code, documentation, and screenshots where permitted.
 ### ☕ CoffeeMaker  
 A full-stack Java web app simulating a virtual coffee shop with secure role-based access for customers, staff, and managers.
 
-- **Tech:** Java, Spring Boot, MySQL, Thymeleaf, Spring Security, JUnit
-- **Features:** Inventory management, order flow, user authentication, high test coverage
+- **Tech:** Java, Spring Boot, MySQL, Thymeleaf, Spring Security, JUnit  
+- **Features:** Inventory management, order flow, user authentication, high test coverage  
 - 📁 [`/CoffeeMaker`](./CoffeeMaker)
+
+---
+
+### 🎨 Foundation Matcher  
+An AI-powered Flask application that detects your dominant skin tone from an uploaded image and recommends matching foundation products across major beauty brands.
+
+- **Tech:** Python, Flask, scikit-learn, Pillow, Bootstrap, JavaScript  
+- **Features:** K-means skin tone analysis, mock brand feed simulation, real-time UI, responsive design  
+- 🌐 [Live Demo](https://foundation-matcher.onrender.com/)  
+- 📁 [`/foundation-matcher`](./foundation-matcher)
 
 ---
 
@@ -42,8 +52,8 @@ Built cloud-native ETL workflows replacing legacy pipelines.
 ## 📫 Contact
 
 - **Afnan Idries**
-- 📍 Durham, NC
-- 📧 afnanidries@gmail.com 
+- 📍 Durham, NC  
+- 📧 afnanidries@gmail.com  
 - 🔗 [LinkedIn](https://linkedin.com/in/afnanidries)  
 - 🔗 [GitHub](https://github.com/afnanidries)
 
