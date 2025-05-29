@@ -1,1 +1,8 @@
+Flask
 gunicorn
+requests
+python-dotenv
+spotipy
+openai
+beautifulsoup4
+lxml
