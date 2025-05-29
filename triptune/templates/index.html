@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TripTune 🎶</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            padding: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #1db954;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #17a74a;
+        }
+        .playlist-link {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 TripTune</h1>
+    <p>Create a music playlist that ends when your drive does!</p>
+
+    {% if login_required %}
+        <p><a href="{{ url_for('login') }}">🔐 Connect your Spotify account</a> to get started.</p>
+    {% else %}
+        <form method="POST">
+            <input type="text" name="start" placeholder="Start location" required>
+            <input type="text" name="end" placeholder="End location" required>
+            <br><br>
+            <button type="submit">Generate Playlist</button>
+        </form>
+    {% endif %}
+
+    {% if playlist_url %}
+        <div class="playlist-link">
+            <h3>✅ Your TripTune Playlist is Ready:</h3>
+            <a href="{{ playlist_url }}" target="_blank">{{ playlist_url }}</a>
+        </div>
+    {% endif %}
+</body>
+</html>
