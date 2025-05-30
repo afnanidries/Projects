@@ -14,45 +14,66 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "dev-key")
 
+
 @app.route('/login')
 def login():
     return redirect(get_auth_url())
 
+
 @app.route('/callback')
 def callback():
     code = request.args.get("code")
-    token_data = get_token(code)
+    if not code:
+        return "Authorization failed.", 400
 
-    session["access_token"] = token_data["access_token"]
-    session["refresh_token"] = token_data["refresh_token"]
+    token_data = get_token(code)
+    session["access_token"] = token_data.get("access_token")
+    session["refresh_token"] = token_data.get("refresh_token")
     return redirect(url_for("index"))
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     access_token = session.get("access_token")
     refresh_token = session.get("refresh_token")
 
+    print("DEBUG: access_token =", access_token)
+    print("DEBUG: refresh_token =", refresh_token)
+
     if not access_token:
         return render_template('index.html', playlist_url=None, login_required=True)
 
+    # Check if token is still valid
     test_auth = requests.get("https://api.spotify.com/v1/me", headers={"Authorization": f"Bearer {access_token}"})
     if test_auth.status_code == 401 and refresh_token:
+        print("🔄 Refreshing expired access token...")
         new_access_token = refresh_access_token(refresh_token)
         session["access_token"] = new_access_token
         access_token = new_access_token
 
     if request.method == 'POST':
-        start_location = request.form['start']
-        end_location = request.form['end']
+        try:
+            start_location = request.form['start']
+            end_location = request.form['end']
 
-        duration = get_trip_duration(start_location, end_location)
-        print("🕒 Trip duration (min):", duration)
+            duration = get_trip_duration(start_location, end_location)
+            print("🕒 Trip duration (min):", duration)
 
-        playlist_url = generate_music_playlist(duration, access_token)
-        return render_template('index.html', playlist_url=playlist_url)
+            if duration is None:
+                return render_template('index.html', playlist_url=None, login_required=False)
+
+            playlist_url = generate_music_playlist(duration, access_token)
+            print("✅ Playlist URL:", playlist_url)
+
+            return render_template('index.html', playlist_url=playlist_url)
+        except Exception as e:
+            print("❌ Error during playlist generation:", e)
+            return render_template('index.html', playlist_url=None)
 
     return render_template('index.html', playlist_url=None)
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # default to 5000 if PORT is not set
-    app.run(host='0.0.0.0', port=port, debug=True)
+
+# This section is not needed on Render (Gunicorn handles WSGI startup)
+# if __name__ == '__main__':
+#     port = int(os.environ.get('PORT', 5000))  # default to 5000 if PORT is not set
+#     app.run(host='0.0.0.0', port=port, debug=True)
