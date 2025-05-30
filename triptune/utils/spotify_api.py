@@ -9,6 +9,8 @@ SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
+# 🔍 Debug print to confirm correct redirect URI is loaded
+print("🔎 SPOTIFY_REDIRECT_URI =", SPOTIFY_REDIRECT_URI)
 
 def get_auth_url():
     scopes = "playlist-modify-private user-top-read"
