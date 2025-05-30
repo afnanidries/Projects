@@ -66,29 +66,33 @@ def generate_music_playlist(duration_minutes, access_token):
     print("🎶 Generating music playlist...")
 
     headers = {"Authorization": f"Bearer {access_token}"}
-    selected = []
-    total_ms = 0
-
     target_ms = duration_minutes * 60000
-    tolerance_ms = 30000  # 30 seconds
+    tolerance_ms = 30000
     min_ms = target_ms - tolerance_ms
     max_ms = target_ms + tolerance_ms
 
-    # --- 1. Get top tracks ---
-    top_url = "https://api.spotify.com/v1/me/top/tracks?limit=20&time_range=medium_term"
+    top_target_ms = int(target_ms * 0.8)
+    new_target_ms = target_ms - top_target_ms
+
+    selected = []
+    total_ms = 0
+
+    # --- 1. Get user top tracks (~80%) ---
+    top_url = "https://api.spotify.com/v1/me/top/tracks?limit=30&time_range=medium_term"
     top_res = requests.get(top_url, headers=headers)
     top_tracks = top_res.json().get("items", []) if top_res.status_code == 200 else []
 
     for t in top_tracks:
         uri = f"spotify:track:{t['id']}"
-        if uri not in selected:
-            selected.append(uri)
-            total_ms += t["duration_ms"]
-            if min_ms <= total_ms <= max_ms:
+        duration_ms = t["duration_ms"]
+        if uri not in [u for u, _ in selected]:
+            selected.append((uri, duration_ms))
+            total_ms += duration_ms
+            if total_ms >= top_target_ms:
                 break
 
-    # --- 2. Get new album releases and extract tracks ---
-    print("🆕 Pulling from new releases...")
+    # --- 2. Add new releases (~20%) ---
+    new_total = 0
     new_url = "https://api.spotify.com/v1/browse/new-releases?limit=10"
     new_res = requests.get(new_url, headers=headers)
     albums = new_res.json().get("albums", {}).get("items", []) if new_res.status_code == 200 else []
@@ -100,15 +104,15 @@ def generate_music_playlist(duration_minutes, access_token):
         for track in tracks:
             uri = f"spotify:track:{track['id']}"
             duration_ms = track.get("duration_ms", 200000)
-            if uri not in selected:
-                selected.append(uri)
-                total_ms += duration_ms
-                if min_ms <= total_ms <= max_ms:
+            if uri not in [u for u, _ in selected]:
+                selected.append((uri, duration_ms))
+                new_total += duration_ms
+                if new_total >= new_target_ms:
                     break
-        if min_ms <= total_ms <= max_ms:
+        if new_total >= new_target_ms:
             break
 
-    print(f"📦 Total playlist length: {round(total_ms / 60000, 2)} min, {len(selected)} tracks")
+    print(f"📦 Collected total: {round(sum(d for _, d in selected) / 60000, 2)} min, {len(selected)} tracks")
 
     # --- 3. Create playlist ---
     user_id = requests.get("https://api.spotify.com/v1/me", headers=headers).json().get("id")
@@ -124,8 +128,26 @@ def generate_music_playlist(duration_minutes, access_token):
 
     playlist_id = playlist_res.json()["id"]
 
-    for i in range(0, len(selected), 100):
-        requests.post(f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=headers, json={"uris": selected[i:i+100]})
+    # --- 4. Trim and optimize track list ---
+    selected.sort(key=lambda x: -x[1])  # Longest first
+    final_tracks = []
+    final_duration = 0
+
+    for uri, dur in selected:
+        if final_duration + dur <= max_ms:
+            final_tracks.append(uri)
+            final_duration += dur
+            if final_duration >= min_ms:
+                break
+
+    print(f"🎯 Final trimmed playlist length: {round(final_duration / 60000, 2)} min, {len(final_tracks)} tracks")
+
+    for i in range(0, len(final_tracks), 100):
+        requests.post(
+            f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks",
+            headers=headers,
+            json={"uris": final_tracks[i:i+100]}
+        )
 
     playlist_url = f"https://open.spotify.com/playlist/{playlist_id}"
     print(f"🎉 Created Playlist: {playlist_url}")
