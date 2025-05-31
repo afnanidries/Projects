@@ -9,14 +9,11 @@ from utils.spotify_api import (
 from dotenv import load_dotenv
 import os
 import requests
-import sys
-sys.stdout.reconfigure(line_buffering=True)
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET", "dev-key")
 
-# Optional for debugging session on Render (esp. if HTTPS is off)
 app.config.update(
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_SAMESITE='Lax'
@@ -24,28 +21,18 @@ app.config.update(
 
 @app.route('/login')
 def login():
-    print("🔐 Redirecting to Spotify login...")
     return redirect(get_auth_url())
-
 
 @app.route('/callback')
 def callback():
     code = request.args.get("code")
-    print("🎯 /callback hit. Received code:", code)
-
     if not code:
-        print("❌ No code received in callback.")
         return "Authorization failed.", 400
 
     token_data = get_token(code)
-    print("🔐 Token data received:", token_data)
-
     session["access_token"] = token_data.get("access_token")
     session["refresh_token"] = token_data.get("refresh_token")
-    print("✅ Tokens saved in session.")
-    
     return redirect(url_for("index"))
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -56,17 +43,16 @@ def index():
     print("DEBUG: refresh_token =", refresh_token)
 
     if not access_token:
-        print("⚠️ No access token. Prompting login.")
-        return render_template('index.html', playlist_url=None, login_required=True)
+        return render_template('index.html', playlist_url=None, login_required=True, recent_trips=[])
 
-    # Check if token is still valid
     test_auth = requests.get("https://api.spotify.com/v1/me", headers={"Authorization": f"Bearer {access_token}"})
     if test_auth.status_code == 401 and refresh_token:
         print("🔄 Refreshing expired access token...")
         new_access_token = refresh_access_token(refresh_token)
         session["access_token"] = new_access_token
         access_token = new_access_token
-        print("✅ Access token refreshed.")
+
+    recent_trips = session.get("recent_trips", [])
 
     if request.method == 'POST':
         try:
@@ -78,20 +64,22 @@ def index():
             print("🕒 Trip duration (min):", duration)
 
             if duration is None:
-                print("⚠️ Could not calculate trip duration.")
-                return render_template('index.html', playlist_url=None, login_required=False)
+                return render_template('index.html', playlist_url=None, login_required=False, recent_trips=recent_trips)
 
             playlist_url = generate_music_playlist(duration, access_token)
             print("✅ Playlist URL:", playlist_url)
 
-            return render_template('index.html', playlist_url=playlist_url)
+            # store recent trip
+            trip_str = f"{start_location} → {end_location}"
+            if trip_str not in recent_trips:
+                recent_trips.insert(0, trip_str)
+                if len(recent_trips) > 5:
+                    recent_trips = recent_trips[:5]
+            session["recent_trips"] = recent_trips
+
+            return render_template('index.html', playlist_url=playlist_url, recent_trips=recent_trips)
         except Exception as e:
             print("❌ Error during playlist generation:", e)
-            return render_template('index.html', playlist_url=None)
+            return render_template('index.html', playlist_url=None, recent_trips=recent_trips)
 
-    return render_template('index.html', playlist_url=None)
-
-
-# # # Local-only runner (not needed for Render with Gunicorn)
-# if __name__ == '__main__':
-#     app.run(debug=True)
+    return render_template('index.html', playlist_url=None, recent_trips=recent_trips)
