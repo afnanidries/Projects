@@ -13,7 +13,8 @@ SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 print("🔎 SPOTIFY_REDIRECT_URI =", SPOTIFY_REDIRECT_URI)
 
 def get_auth_url():
-    scopes = "playlist-modify-private user-top-read"
+    scopes = "playlist-modify-private playlist-modify-public user-top-read"
+
     auth_url = (
         "https://accounts.spotify.com/authorize"
         f"?client_id={SPOTIFY_CLIENT_ID}"
