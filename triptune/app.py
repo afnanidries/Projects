@@ -9,6 +9,8 @@ from utils.spotify_api import (
 from dotenv import load_dotenv
 import os
 import requests
+import sys
+sys.stdout.reconfigure(line_buffering=True)
 
 load_dotenv()
 app = Flask(__name__)
@@ -51,7 +53,6 @@ def index():
     refresh_token = session.get("refresh_token")
 
     print("DEBUG: access_token =", access_token)
-    print("🌐 Mobile session access_token =", access_token)
     print("DEBUG: refresh_token =", refresh_token)
 
     if not access_token:
