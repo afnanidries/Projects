@@ -16,7 +16,7 @@ app.secret_key = os.getenv("FLASK_SECRET", "dev-key")
 
 # Optional for debugging session on Render (esp. if HTTPS is off)
 app.config.update(
-    SESSION_COOKIE_SECURE=False,
+    SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_SAMESITE='Lax'
 )
 
