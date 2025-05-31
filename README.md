@@ -30,13 +30,14 @@ An AI-powered Flask application that detects your dominant skin tone from an upl
 ### 🎵 TripTune  
 A smart playlist generator that creates Spotify playlists tailored to the exact length of your road trip, blending your top songs with curated new releases to match your vibe.
 
-- **Tech:** Python, Flask, Spotify Web API, Google Maps API, OpenAI, Jinja2, Render  
+- **Tech:** Python, Flask, Spotify Web API, Google Maps API, Jinja2, Render  
 - **Features:**  
   - Trip duration calculation via Google Maps  
   - Spotify OAuth login & top track retrieval  
-  - Playlist length control with ±30s precision  
-  - Blended track selection (80% user favorites, 20% new releases)  
-  - Fully deployed via Render with session token refresh  
+  - Playlist length matching with ±30s precision  
+  - Blended music selection (80% user favorites, 20% new releases)  
+  - Session-based token refresh logic  
+  - Deployed via Render  
 - 🌐 [Live Demo](https://triptune.onrender.com/)  
 - 📁 [`/triptune`](./triptune)
 
