@@ -77,7 +77,7 @@
   <p>Create a music playlist that ends when your drive does!</p>
 
   {% if login_required %}
-    <p><a href="{{ url_for('login') }}">🔐 Connect your Spotify account</a> to get started.</p>
+    <p><a href="{{ url_for('login') }}">Connect your Spotify account</a> to get started.</p>
   {% else %}
     <form method="POST" action="/">
       <input type="text" name="start" placeholder="Start location" required>
@@ -89,7 +89,7 @@
   {% endif %}
 
   {% if recent_trips %}
-    <h3>🔁 Recently Generated Trips</h3>
+    <h3>Recently Generated Trips</h3>
     <ul style="list-style: none; padding: 0;">
       {% for trip in recent_trips %}
         <li style="margin: 8px 0;">
@@ -103,7 +103,7 @@
 
   {% if playlist_url %}
     <div class="playlist-link">
-      <h3>✅ Your TripTune Playlist is Ready:</h3>
+      <h3>Your TripTune Playlist is Ready:</h3>
       <a href="{{ playlist_url }}" target="_blank">{{ playlist_url }}</a>
     </div>
   {% endif %}
