@@ -51,6 +51,7 @@ def index():
     refresh_token = session.get("refresh_token")
 
     print("DEBUG: access_token =", access_token)
+    print("🌐 Mobile session access_token =", access_token)
     print("DEBUG: refresh_token =", refresh_token)
 
     if not access_token:

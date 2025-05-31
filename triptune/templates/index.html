@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TripTune 🎶</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- ✅ Helps mobile layout and form behavior -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -54,11 +55,12 @@
     {% if login_required %}
         <p><a href="{{ url_for('login') }}">🔐 Connect your Spotify account</a> to get started.</p>
     {% else %}
-        <form method="POST">
+        <!-- ✅ Explicit POST and action for mobile form reliability -->
+        <form method="POST" action="/">
             <input type="text" name="start" placeholder="Start location" required>
             <input type="text" name="end" placeholder="End location" required>
             <br><br>
-            <button type="submit">Generate Playlist</button>
+            <button type="submit" name="submit">Generate Playlist</button>
         </form>
     {% endif %}
 
