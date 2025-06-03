@@ -14,7 +14,6 @@ print("🔎 SPOTIFY_REDIRECT_URI =", SPOTIFY_REDIRECT_URI)
 
 def get_auth_url():
     scopes = "playlist-modify-private playlist-modify-public user-top-read"
-
     auth_url = (
         "https://accounts.spotify.com/authorize"
         f"?client_id={SPOTIFY_CLIENT_ID}"
@@ -81,7 +80,20 @@ def generate_music_playlist(duration_minutes, access_token):
     # --- 1. Get user top tracks (~80%) ---
     top_url = "https://api.spotify.com/v1/me/top/tracks?limit=30&time_range=medium_term"
     top_res = requests.get(top_url, headers=headers)
-    top_tracks = top_res.json().get("items", []) if top_res.status_code == 200 else []
+    print("🎧 Spotify top tracks response status:", top_res.status_code)
+
+    try:
+        top_data = top_res.json()
+        top_tracks = top_data.get("items", [])
+        print(f"🎧 Retrieved {len(top_tracks)} top tracks.")
+    except ValueError:
+        print("❌ Failed to parse top tracks JSON. Raw response:")
+        print(top_res.text)
+        return None
+
+    if not top_tracks:
+        print("⚠️ No top tracks returned! Possibly a new or inactive Spotify account.")
+        return None
 
     for t in top_tracks:
         uri = f"spotify:track:{t['id']}"
@@ -96,6 +108,7 @@ def generate_music_playlist(duration_minutes, access_token):
     new_total = 0
     new_url = "https://api.spotify.com/v1/browse/new-releases?limit=10"
     new_res = requests.get(new_url, headers=headers)
+    print("🆕 New releases response status:", new_res.status_code)
     albums = new_res.json().get("albums", {}).get("items", []) if new_res.status_code == 200 else []
 
     for album in albums:
@@ -153,3 +166,4 @@ def generate_music_playlist(duration_minutes, access_token):
     playlist_url = f"https://open.spotify.com/playlist/{playlist_id}"
     print(f"🎉 Created Playlist: {playlist_url}")
     return playlist_url
+
