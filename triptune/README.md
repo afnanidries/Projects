@@ -41,11 +41,15 @@
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-| Landing Page | Playlist Result |
-|--------------|-----------------|
-| _Coming soon_ | _Coming soon_ |
+| Page                              | Description                                                             |
+|-----------------------------------|-------------------------------------------------------------------------|
+| ![Landing Page](screenshots/landing-page.png)     | Homepage with TripTune branding and trip input form                    |
+| ![Login Page](screenshots/login-page.png)         | Spotify login prompt via OAuth                                         |
+| ![Spotify Auth Page](screenshots/spotify-auth.png)| Spotify’s authorization screen for granting playlist + top tracks access |
+| ![Playlist Result Page](screenshots/playlist-result.png) | Generated playlist link with timing confirmation                      |
+| ![Mobile View](screenshots/mobile-view.png)       | Responsive view of the app on a mobile browser                         |
 
 ---
 
