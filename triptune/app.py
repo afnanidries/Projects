@@ -9,6 +9,9 @@ from utils.spotify_api import (
 from dotenv import load_dotenv
 import os
 import requests
+import sys
+
+sys.stdout.reconfigure(line_buffering=True)
 
 load_dotenv()
 app = Flask(__name__)
