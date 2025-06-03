@@ -47,8 +47,8 @@
 |-----------------------------------|-------------------------------------------------------------------------|
 | ![Landing Page](../CoffeeMaker/images/TripTuneFillForm.png)    | Homepage with TripTune branding and trip input form                    |
 | ![Login Page](../CoffeeMaker/images/TripTuneHomepage.png)         | Spotify login prompt via OAuth                                         |
-| ![Spotify Auth Page](screenshots/spotify-auth.png)| Spotify’s authorization screen for granting playlist + top tracks access |
-| ![Playlist Result Page](screenshots/playlist-result.png) | Generated playlist link with timing confirmation                      |
+| ![Spotify Auth Page](../CoffeeMaker/images/TripTuneSpotAuthPage.png)| Spotify’s authorization screen for granting playlist + top tracks access |
+| ![Playlist Result Page](../CoffeeMaker/images/TripTuneGenPlaylist.png) ![Playlist Result Page](../CoffeeMaker/images/TripTunePlaylistLink.png) | Generated playlist link with timing confirmation                      |
 | ![Mobile View](screenshots/mobile-view.png)       | Responsive view of the app on a mobile browser                         |
 
 ---
