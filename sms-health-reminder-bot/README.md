@@ -78,7 +78,7 @@ Then go to [http://localhost:3000](http://localhost:3000)
 ---
 
 ## Preview
-![Screenshot](public/preview.png) <!-- Add this if you want to drop in a UI screenshot -->
+![Screenshot](../CoffeeMaker/images/sms-health-reminder-notif.png) <!-- Add this if you want to drop in a UI screenshot -->
 
 ---
 
