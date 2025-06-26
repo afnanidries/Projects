@@ -1,0 +1,101 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Health Tip Reminder</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #f9f6f2;
+      margin: 0;
+      padding: 0;
+      color: #2c2c2c;
+    }
+    .container {
+      max-width: 700px;
+      margin: 4rem auto;
+      background-color: #ffffff;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 2rem;
+      color: #1c1c1c;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-top: 1.5rem;
+      font-weight: bold;
+      color: #3d3d3d;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-top: 0.5rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #1d483b;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #16372d;
+    }
+    #status {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-weight: 500;
+      color: #1d483b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Health Tip</h1>
+    <form id="smsForm">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="phone">Your WhatsApp Number:</label>
+      <input type="text" id="phone" name="phone" required />
+
+      <button type="submit">Send Me a Tip</button>
+    </form>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    document.getElementById('smsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+
+      const res = await fetch('/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, phone })
+      });
+
+      const status = document.getElementById('status');
+      status.textContent = res.ok
+        ? 'Health tip sent to your WhatsApp!'
+        : 'Failed to send. Check your number and try again.';
+    });
+  </script>
+</body>
+</html>
