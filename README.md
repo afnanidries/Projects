@@ -47,12 +47,16 @@ A smart playlist generator that creates Spotify playlists tailored to the exact 
 
 While the following projects can't be shown due to company or institutional policy, I can provide context or demo walkthroughs upon request:
 
-### 🐺 K2S WolfConnect Mentorship Portal  
-Collaborated on a scalable mentorship matching system for NCSU students.
+### 🐺 K2S WolfConnect Mentorship Portal
+**Role:** Full Stack Developer | Laravel, React, Docker | Jan – Apr 2024  
+*Private project built in partnership with K2S (Koncepts2Solutions) and NC State's CSC Senior Design.*
 
-- **Tech:** React, Laravel (PHP), Docker, MySQL  
-- **Scope:** Built backend APIs for user auth, matching logic, forum and message modules  
-- **Role:** Full-stack contributor with emphasis on backend testing
+- Refactored and optimized legacy codebase inherited from previous teams to resolve system-wide bugs and database design issues.
+- Developed and deployed new features: messaging UI/UX overhaul, public discussion forum, and profile creation workflows.
+- Built RESTful APIs and implemented unit tests (120+ PHPUnit tests) and functional tests for Laravel-based services.
+- Dockerized all services and maintained a local VM deployment pipeline aligned with Agile/DevOps best practices.
+- Coordinated with sponsor and team during weekly Agile standups and demos to ensure technical and user-focused alignment.
+
 
 ---
 
