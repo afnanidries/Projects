@@ -90,7 +90,7 @@ Then go to [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## 📘 What I Learned
+## What I Learned
 
 This project was my introduction to integrating the Twilio API and using WhatsApp for programmable messaging. I gained hands-on experience working with:
 
@@ -103,6 +103,6 @@ This project was my introduction to integrating the Twilio API and using WhatsAp
 
 ---
 
-## 👤 Author
+## Author
 **Afnan Idries**  
 GitHub: [@afnanidries](https://github.com/afnanidries)
