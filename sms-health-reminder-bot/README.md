@@ -23,13 +23,13 @@ A simple, full-stack web app that delivers randomized daily health tips to your 
 ## Live Demo
 
 You can view the deployed version of this project here:
-👉 [https://sms-health-reminder-bot.onrender.com](https://sms-health-reminder-bot.onrender.com)
+[https://sms-health-reminder-bot.onrender.com](https://sms-health-reminder-bot.onrender.com)
+> **Note:** Render web services on the free tier go inactive after 15 minutes of inactivity. The link below may take 20–30 seconds to wake up, or appear unavailable if the service hasn't been manually restarted. A demo is linked below if the Render link is temporarily inactive.
 
-Here is a recording of the deployed web site: 
 [Watch the demo (video file)](../CoffeeMaker/images/sms-health-bot-demo.mov)
    [notifcation sent to my phone after hitting Send Me a Tip](../CoffeeMaker/images/sms-health-reminder-notif.png)
 
-> *Note: This was developed as a personal Twilio sandbox demo project using my own verified WhatsApp number. For security and API constraints, the live version works only with pre-verified WhatsApp numbers.*
+> **Note:** This was developed as a personal Twilio sandbox demo project using my own verified WhatsApp number. For security and API constraints, the live version works only with pre-verified WhatsApp numbers.*
 
 ---
 
