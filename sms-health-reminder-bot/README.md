@@ -20,6 +20,15 @@ A simple, full-stack web app that delivers randomized daily health tips to your 
 
 ---
 
+## Live Demo
+
+You can view the deployed version of this project here:
+👉 [https://sms-health-reminder-bot.onrender.com](https://sms-health-reminder-bot.onrender.com)
+
+> *Note: This was developed as a personal Twilio sandbox demo project using my own verified WhatsApp number. For security and API constraints, the live version works only with pre-verified WhatsApp numbers.*
+
+---
+
 ## Setup Instructions
 
 ### 1. Clone the Repo
@@ -60,7 +69,7 @@ Then go to [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## Sample Tips
+## 💬 Sample Tips
 - Drink at least 8 cups of water today.
 - Avoid screens for 30 minutes before bed.
 - Take 3 deep breaths right now.
@@ -78,10 +87,10 @@ Then go to [http://localhost:3000](http://localhost:3000)
 ---
 
 ## Preview
-![Screenshot](public/preview.png) <!-- Add this if you want to drop in a UI screenshot -->
+![Screenshot](../CoffeMaker/images/sms-health-reminder-notif.png) 
 
 ---
 
-## Author
+## 👤 Author
 **Afnan Idries**  
 GitHub: [@afnanidries](https://github.com/afnanidries)
