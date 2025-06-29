@@ -25,6 +25,10 @@ A simple, full-stack web app that delivers randomized daily health tips to your 
 You can view the deployed version of this project here:
 👉 [https://sms-health-reminder-bot.onrender.com](https://sms-health-reminder-bot.onrender.com)
 
+Here is a recording of the deployed web site: 
+[Watch the demo (video file)](../CoffeeMaker/images/sms-health-bot-demo.mov)
+   [notifcation sent to my phone after hitting Send Me a Tip](../CoffeeMaker/images/sms-health-reminder-notif.png)
+
 > *Note: This was developed as a personal Twilio sandbox demo project using my own verified WhatsApp number. For security and API constraints, the live version works only with pre-verified WhatsApp numbers.*
 
 ---
@@ -86,8 +90,16 @@ Then go to [http://localhost:3000](http://localhost:3000)
 
 ---
 
-## Preview
-![Screenshot](../CoffeMaker/images/sms-health-reminder-notif.png) 
+## 📘 What I Learned
+
+This project was my introduction to integrating the Twilio API and using WhatsApp for programmable messaging. I gained hands-on experience working with:
+
+- **Twilio WhatsApp Sandbox**: Learning how sandbox environments work and how verified numbers are required to safely test message delivery.
+- **API integration**: Sending POST requests and securely managing credentials with environment variables in both local and cloud environments.
+- **Render Deployment**: I’ve deployed multiple projects to Render, but this helped me further master how to serve subdirectory web services from a monorepo using build/start commands.
+- **Node.js + Express**: Reinforced my understanding of routing, handling JSON payloads, and building minimal, production-ready web services.
+- **.env configuration + GitHub workflow**: Improved confidence in setting up secure deployment pipelines using `.env`, `.gitignore`, and cross-environment support.
+- **Full-stack project flow**: From frontend UI, backend logic, third-party API communication, to cloud deployment — this was a comprehensive mini-capstone for real-world service deployment.
 
 ---
 
