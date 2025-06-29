@@ -6,28 +6,28 @@ Each subproject includes code, documentation, and screenshots where permitted.
 
 ---
 
-## 📂 Featured Projects
+## Featured Projects
 
-### ☕ CoffeeMaker  
+### CoffeeMaker  
 A full-stack Java web app simulating a virtual coffee shop with secure role-based access for customers, staff, and managers.
 
 - **Tech:** Java, Spring Boot, MySQL, Thymeleaf, Spring Security, JUnit  
 - **Features:** Inventory management, order flow, user authentication, high test coverage  
-- 📁 [`/CoffeeMaker`](./CoffeeMaker)
+- [`/CoffeeMaker`](./CoffeeMaker)
 
 ---
 
-### 🎨 Foundation Matcher  
+### Foundation Matcher  
 An AI-powered Flask application that detects your dominant skin tone from an uploaded image and recommends matching foundation products across major beauty brands.
 
 - **Tech:** Python, Flask, scikit-learn, Pillow, Bootstrap, JavaScript  
 - **Features:** K-means skin tone analysis, mock brand feed simulation, real-time UI, responsive design  
-- 🌐 [Live Demo](https://foundation-matcher.onrender.com/)  
-- 📁 [`/foundation-matcher`](./foundation-matcher)
+- [Live Demo](https://foundation-matcher.onrender.com/)  
+- [`/foundation-matcher`](./foundation-matcher)
 
 ---
 
-### 🎵 TripTune  
+### TripTune  
 A smart playlist generator that creates Spotify playlists tailored to the exact length of your road trip, blending your top songs with curated new releases to match your vibe.
 
 - **Tech:** Python, Flask, Spotify Web API, Google Maps API, Jinja2, Render  
@@ -38,12 +38,24 @@ A smart playlist generator that creates Spotify playlists tailored to the exact 
   - Blended music selection (80% user favorites, 20% new releases)  
   - Session-based token refresh logic  
   - Deployed via Render  
-- 🌐 [Live Demo](https://triptune.onrender.com/)  
-- 📁 [`/triptune`](./triptune)
+- [Live Demo](https://triptune.onrender.com/)  
+- [`/triptune`](./triptune)
 
 ---
+### WhatsApp Health Tip Reminder  
+A full-stack wellness app that delivers randomized health tips to verified WhatsApp users via Twilio’s WhatsApp Sandbox API.
 
-## 🔒 Not Publicly Available Projects
+- **Tech Stack:** Node.js, Express, HTML, CSS, Twilio API, REST API, Render
+- **Key Skills:** 
+  - RESTful API development using Express
+  - Integration of Twilio’s programmable messaging with WhatsApp Sandbox
+  - Secure environment variable handling with `.env`
+  - Randomized logic with controlled message formatting
+- [Live Demo](https://sms-health-reminder-bot.onrender.com) *(Render may sleep after 15 mins of inactivity; live demo available on request)*  
+- [`/sms-health-reminder-bot`](./sms-health-reminder-bot)
+---
+
+## Not Publicly Available Projects
 
 While the following projects can't be shown due to company or institutional policy, I can provide context or demo walkthroughs upon request:
 
@@ -69,14 +81,14 @@ Built cloud-native ETL workflows replacing legacy pipelines.
 
 ---
 
-## 📫 Contact
+## Contact
 
 - **Afnan Idries**  
-- 📍 Durham, NC  
-- 📧 afnanidries@gmail.com  
-- 🔗 [LinkedIn](https://linkedin.com/in/afnanidries)  
-- 🔗 [GitHub](https://github.com/afnanidries)
+- Durham, NC  
+- afnanidries@gmail.com  
+- [LinkedIn](https://linkedin.com/in/afnanidries)  
+- [GitHub](https://github.com/afnanidries)
 
 ---
 
-> 💡 Let me know if you’d like a demo or more technical explanation of any project listed here!
+> Let me know if you’d like a demo or more technical explanation of any project listed here!
